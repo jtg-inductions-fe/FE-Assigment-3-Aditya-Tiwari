@@ -1,4 +1,4 @@
-export default async ({
+const NotFound = async ({
   params,
 }: {
   params: Promise<{ username: string }>;
@@ -7,3 +7,5 @@ export default async ({
 
   return <div>No user found named {` ${username}`}</div>;
 };
+
+export default NotFound;

@@ -1,4 +1,4 @@
-export default async ({
+const Profile = async ({
   params,
 }: {
   params: Promise<{ username: string }>;
@@ -7,3 +7,5 @@ export default async ({
 
   return <div>{`This is ${username}'s profile`}</div>;
 };
+
+export default Profile;

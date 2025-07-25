@@ -1,5 +1,9 @@
-export default ({
+const AuthLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) => <div>{children}</div>;
+}>) => {
+  return <div>{children}</div>;
+};
+
+export default AuthLayout;

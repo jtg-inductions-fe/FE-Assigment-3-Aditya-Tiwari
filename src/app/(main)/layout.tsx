@@ -1,4 +1,4 @@
-export default ({ children }: { children: React.ReactNode }) => {
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <header>Header</header>
@@ -6,3 +6,5 @@ export default ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
+export default MainLayout;
