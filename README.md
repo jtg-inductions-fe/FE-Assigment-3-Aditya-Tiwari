@@ -1,3 +1,11 @@
+# GitHub Profile Viewer
+
+This is a GitHub profile viewer application built with [Next.js](https://nextjs.org).  
+It allows users to search and view GitHub profiles using the GitHub User API.  
+Authentication is handled using GitHub access tokens, enabling secure user-specific access and enhanced API rate limits.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -12,7 +20,7 @@ yarn dev
 pnpm dev
 # or
 bun dev
-```
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
@@ -34,3 +42,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```

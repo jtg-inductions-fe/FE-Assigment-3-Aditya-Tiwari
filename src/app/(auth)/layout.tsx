@@ -1,7 +1,10 @@
+// TODO: Add authentication page layout
+import { ReactNode } from "react";
+
 const AuthLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) => {
   return <div>{children}</div>;
 };
