@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -24,40 +24,38 @@ import {
 } from "@/components/ui/form";
 
 import { login } from "@/app/(auth)/login/actions";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
 import Image from "next/image";
-
-type LoginFormValues = {
-  AccessToken: string;
-};
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginFormValues } from "@/constants/validation";
 
 const LoginForm = () => {
   const form = useForm<LoginFormValues>({
-    mode: "onSubmit",
-    reValidateMode: "onSubmit",
+    resolver: zodResolver(loginSchema),
   });
 
-  const [state, loginAction] = useActionState(login, undefined);
-  const { pending } = useFormStatus();
+  const [isLoading, setIsLoading] = useState(false);
 
-  React.useEffect(() => {
-    if (state?.errors) {
-      Object.entries(state.errors).forEach(([field, messages]) => {
+  const onSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    const result = await login(data);
+    setIsLoading(false);
+
+    if (result?.errors) {
+      Object.entries(result.errors).forEach(([field, messages]) => {
         form.setError(field as keyof LoginFormValues, {
-          type: "server",
-          message: Array.isArray(messages) ? messages.join(", ") : messages,
+          type: "manual",
+          message: messages[0],
         });
       });
     }
-  }, [state?.errors, form]);
+  };
 
   return (
     <Card className="w-full max-w-sm flex gap-6">
       <CardHeader className="flex-col">
         <Image
           src="/images/Logo.png"
-          alt="company logo"
+          alt="Github profile viewer"
           className="justify-self-center my-3"
           height={100}
           width={100}
@@ -69,7 +67,7 @@ const LoginForm = () => {
       </CardHeader>
 
       <Form {...form}>
-        <form action={loginAction} noValidate>
+        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
           <CardContent>
             <div className="flex flex-col gap-6">
               <FormField
@@ -87,8 +85,9 @@ const LoginForm = () => {
                         aria-invalid={
                           form.formState.errors.AccessToken ? "true" : "false"
                         }
-                        disabled={pending}
+                        disabled={isLoading}
                         autoComplete="off"
+                        required
                       />
                     </FormControl>
                     <FormMessage />
@@ -102,10 +101,10 @@ const LoginForm = () => {
             <Button
               type="submit"
               className="w-full my-2"
-              disabled={pending}
-              aria-disabled={pending}
+              disabled={isLoading}
+              aria-disabled={isLoading}
             >
-              {pending ? "Logging in..." : "Login"}
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </CardFooter>
         </form>

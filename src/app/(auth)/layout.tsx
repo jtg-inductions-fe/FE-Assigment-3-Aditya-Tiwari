@@ -6,7 +6,11 @@ const AuthLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  return <div>{children}</div>;
+  return (
+    <div className="container max-w-screen h-screen border-1 flex items-center justify-center">
+      {children}
+    </div>
+  );
 };
 
 export default AuthLayout;

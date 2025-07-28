@@ -1,52 +1,35 @@
 "use server";
 
-import { z } from "zod";
-import { createSession, deleteSession } from "@/lib/session";
+import { createLoginSession, clearLoginSession } from "@/lib/utils/session";
 import { redirect } from "next/navigation";
+import { GITHUB_API, ROUTES } from "@/constants/routes";
+import { LoginFormValues } from "@/constants/validation";
+import fetcher from "@/lib/utils/fetcher";
 
-const githubTokenRegex =
-  /^(gh[ps]_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59})$/;
+const login = async (values: LoginFormValues) => {
+  const AccessToken = values.AccessToken;
 
-const loginSchema = z.object({
-  AccessToken: z.string().regex(githubTokenRegex, {
-    message: "Invalid token",
-  }),
-});
+  const { responseData, userName } = await fetcher(
+    GITHUB_API.BASE_URL,
+    GITHUB_API.ROUTES.USER,
+    AccessToken
+  );
 
-export async function login(prevState: unknown, formData: FormData) {
-  const result = loginSchema.safeParse(Object.fromEntries(formData));
-
-  if (!result.success) {
-    return {
-      errors: result.error.flatten().fieldErrors,
-    };
-  }
-
-  const { AccessToken } = result.data;
-
-  const response = await fetch("https://api.github.com/user", {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${AccessToken}`,
-      Accept: "application/vnd.github+json",
-    },
-  });
-
-  if (!response.ok) {
+  if (responseData.status === "401" || userName === undefined) {
     return {
       errors: {
-        AccessToken: ["Invalid token"],
+        AccessToken: ["Invalid or expired token. Please try again."],
       },
     };
   }
 
-  const data = await response.json();
-  await createSession(data.login);
+  await createLoginSession(AccessToken);
+  redirect(`/${userName}`);
+};
 
-  redirect(`/${data.login}`);
-}
+const logout = async () => {
+  await clearLoginSession();
+  redirect(ROUTES.LOGIN);
+};
 
-export async function logout() {
-  await deleteSession();
-  redirect("/login");
-}
+export { login, logout };
