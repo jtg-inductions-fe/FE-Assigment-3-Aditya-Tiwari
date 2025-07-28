@@ -2,12 +2,9 @@ import type { NextConfig } from "next";
 import { ROUTES } from "@/constants/routes";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    webVitalsAttribution: ["CLS", "LCP"],
-    useLightningcss: true,
-  },
   logging: {
     fetches: {
+      fullUrl: true,
       hmrRefreshes: true,
     },
   },
