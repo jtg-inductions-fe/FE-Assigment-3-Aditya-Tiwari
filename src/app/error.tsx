@@ -1,4 +1,4 @@
-//TODO: Create Error boundy page
+"use client";
 
 const ErrorBoundary = () => {
   return <div>Unknown Error Occured</div>;

@@ -35,7 +35,7 @@ const RootLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => (
-  <html lang="en">
+  <html lang="en" className="dark">
     <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       {children}
     </body>
