@@ -4,7 +4,7 @@ import { createLoginSession, clearLoginSession } from "@/lib/utils/session";
 import { redirect } from "next/navigation";
 import { GITHUB_API, ROUTES } from "@/constants/routes";
 import { LoginFormValues } from "@/constants/validation";
-import fetcher from "@/lib/utils/fetcher";
+import fetcher from "@/lib/utils/fetchData";
 
 const login = async (values: LoginFormValues) => {
   const AccessToken = values.AccessToken;

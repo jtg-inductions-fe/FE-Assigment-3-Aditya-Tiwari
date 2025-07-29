@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -33,21 +33,20 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-    const result = await login(data);
-    setIsLoading(false);
-
-    if (result?.errors) {
-      Object.entries(result.errors).forEach(([field, messages]) => {
-        form.setError(field as keyof LoginFormValues, {
-          type: "manual",
-          message: messages[0],
+    startTransition(async () => {
+      const result = await login(data);
+      if (result?.errors) {
+        Object.entries(result.errors).forEach(([field, messages]) => {
+          form.setError(field as keyof LoginFormValues, {
+            type: "manual",
+            message: messages[0],
+          });
         });
-      });
-    }
+      }
+    });
   };
 
   return (
@@ -85,7 +84,7 @@ const LoginForm = () => {
                         aria-invalid={
                           form.formState.errors.AccessToken ? "true" : "false"
                         }
-                        disabled={isLoading}
+                        disabled={isPending}
                         autoComplete="off"
                         required
                       />
@@ -101,10 +100,10 @@ const LoginForm = () => {
             <Button
               type="submit"
               className="w-full my-2"
-              disabled={isLoading}
-              aria-disabled={isLoading}
+              disabled={isPending}
+              aria-disabled={isPending}
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isPending ? "Logging in..." : "Login"}
             </Button>
           </CardFooter>
         </form>

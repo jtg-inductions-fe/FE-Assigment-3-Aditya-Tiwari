@@ -2,7 +2,7 @@ import { LOGIN_SESSION_COOKIE_NAME } from "@/constants/session";
 import { cookies } from "next/headers";
 import { decrypt } from "./session";
 
-const fetcher = async (
+const fetchData = async (
   baseURL: string,
   route: string,
   accessToken?: string
@@ -34,4 +34,4 @@ const fetcher = async (
   return { responseData, userName };
 };
 
-export default fetcher;
+export default fetchData;

@@ -7,7 +7,7 @@ import {
   ROUTES,
   USERNAME_ROUTE_REGEX,
 } from "./constants/routes";
-import fetcher from "./lib/utils/fetcher";
+import fetchData from "./lib/utils/fetchData";
 import { LOGIN_SESSION_COOKIE_NAME } from "./constants/session";
 
 const middleware = async (req: NextRequest) => {
@@ -25,7 +25,7 @@ const middleware = async (req: NextRequest) => {
   }
 
   if (path === ROUTES.LOGIN && session?.accessToken) {
-    const { userName } = await fetcher(
+    const { userName } = await fetchData(
       GITHUB_API.BASE_URL,
       GITHUB_API.ROUTES.USER
     );
