@@ -1,7 +1,7 @@
-// TODO: Add Login functionality
+import { LoginForm } from "@/containers/auth";
 
 const Login = () => {
-  return <div>Login Page</div>;
+  return <LoginForm />;
 };
 
 export default Login;

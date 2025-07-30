@@ -1,13 +1,15 @@
 // TODO: Create User profile Page
 
-const Profile = async ({
-  params,
-}: Readonly<{
-  params: Promise<{ username: string }>;
-}>) => {
-  const { username } = await params;
+import { logout } from "@/actions/authActions";
+import { Button } from "@/components/ui/button";
 
-  return <div>{`This is ${username}'s profile`}</div>;
+const Profile = () => {
+  return (
+    <>
+      <div>Hello User</div>
+      <Button onClick={logout}>Logout</Button>
+    </>
+  );
 };
 
 export default Profile;

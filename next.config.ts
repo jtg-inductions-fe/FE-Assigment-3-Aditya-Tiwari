@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: ROUTES.HOME,
+        source: ROUTES.DEFAULT,
         destination: ROUTES.LOGIN,
         permanent: false,
       },
