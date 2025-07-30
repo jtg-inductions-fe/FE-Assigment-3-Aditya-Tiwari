@@ -8,7 +8,7 @@ import {
   LOGIN_SESSION_EXPIRY_MS,
   LOGIN_SESSION_EXPIRATION,
   JWT_ALGORITHM,
-} from "@/constants/session";
+} from "./loginSession.constants";
 
 const secretKey = process.env.SESSION_SECRET;
 

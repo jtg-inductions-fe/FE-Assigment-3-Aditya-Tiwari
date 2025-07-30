@@ -1,6 +1,6 @@
 // TODO: Create User profile Page
 
-import { logout } from "@/app/(auth)/login/actions";
+import { logout } from "@/actions/authActions";
 import { Button } from "@/components/ui/button";
 
 const Profile = () => {

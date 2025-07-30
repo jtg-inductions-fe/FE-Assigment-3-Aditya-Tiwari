@@ -1,11 +1,11 @@
-import { LOGIN_SESSION_COOKIE_NAME } from "@/constants/session";
+import { LOGIN_SESSION_COOKIE_NAME } from "@/utils/loginSession.constants";
 import { cookies } from "next/headers";
-import { decrypt } from "./session";
+import { decrypt } from "./loginSession";
 
 const fetchData = async (
-  baseURL: string,
   route: string,
-  accessToken?: string
+  accessToken?: string,
+  baseURL?: string
 ) => {
   if (!accessToken) {
     const cookieStore = await cookies();
@@ -19,15 +19,19 @@ const fetchData = async (
   if (!accessToken) {
     throw new Error("Access token not found.");
   }
-  const response = await fetch(`${baseURL}${route}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      Accept: "application/vnd.github+json",
-    },
-    next: {
-      revalidate: 60,
-    },
-  });
+
+  const response = await fetch(
+    `${baseURL || process.env.GITHUB_BASE_URL}${route}`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: "application/vnd.github+json",
+      },
+      next: {
+        revalidate: 60,
+      },
+    }
+  );
 
   const responseData = await response.json();
   const userName = responseData.login;

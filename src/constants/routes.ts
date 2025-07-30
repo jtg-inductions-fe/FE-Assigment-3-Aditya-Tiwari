@@ -1,17 +1,11 @@
 // TODO: Add all route constants
 
-type Routes = {
-  LOGIN: string;
-  DEFAULT: string;
-};
-
-export const ROUTES: Routes = {
+export const ROUTES = {
   LOGIN: "/login",
   DEFAULT: "/",
 } as const;
 
 export const GITHUB_API = {
-  BASE_URL: "https://api.github.com",
   ROUTES: {
     USER: "/user",
   },
@@ -19,4 +13,5 @@ export const GITHUB_API = {
 
 export const PUBLIC_ROUTES = [ROUTES.LOGIN, ROUTES.DEFAULT] as const;
 
+/** Regular expression for /[username] dynamic route like /john, not /john/settings */
 export const USERNAME_ROUTE_REGEX = /^\/[^/]+$/;

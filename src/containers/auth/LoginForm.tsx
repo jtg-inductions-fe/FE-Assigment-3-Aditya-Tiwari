@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -23,10 +23,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { login } from "@/app/(auth)/login/actions";
+import { login } from "@/actions/authActions";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormValues } from "@/constants/validation";
+import { loginSchema, LoginFormValues } from "./LoginForm.schema";
 
 const LoginForm = () => {
   const form = useForm<LoginFormValues>({
@@ -66,12 +66,12 @@ const LoginForm = () => {
       </CardHeader>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <div className="flex flex-col gap-6">
               <FormField
                 control={form.control}
-                name="AccessToken"
+                name="accessToken"
                 render={({ field }) => (
                   <FormItem className="grid gap-2">
                     <Label htmlFor={field.name}>Access Token</Label>
@@ -81,9 +81,6 @@ const LoginForm = () => {
                         id={field.name}
                         placeholder="Access Token"
                         value={field.value ?? ""}
-                        aria-invalid={
-                          form.formState.errors.AccessToken ? "true" : "false"
-                        }
                         disabled={isPending}
                         autoComplete="off"
                         required

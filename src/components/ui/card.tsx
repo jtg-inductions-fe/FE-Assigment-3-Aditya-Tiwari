@@ -1,7 +1,7 @@
-import React, { ComponentProps } from "react";
+import { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
-const Card: React.FC<ComponentProps<"div">> = ({ className, ...props }) => {
+const Card = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card"
@@ -14,10 +14,7 @@ const Card: React.FC<ComponentProps<"div">> = ({ className, ...props }) => {
   );
 };
 
-const CardHeader: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardHeader = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-header"
@@ -30,10 +27,7 @@ const CardHeader: React.FC<ComponentProps<"div">> = ({
   );
 };
 
-const CardTitle: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardTitle = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-title"
@@ -43,10 +37,7 @@ const CardTitle: React.FC<ComponentProps<"div">> = ({
   );
 };
 
-const CardDescription: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardDescription = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-description"
@@ -56,10 +47,7 @@ const CardDescription: React.FC<ComponentProps<"div">> = ({
   );
 };
 
-const CardAction: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardAction = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-action"
@@ -72,10 +60,7 @@ const CardAction: React.FC<ComponentProps<"div">> = ({
   );
 };
 
-const CardContent: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardContent = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-content"
@@ -85,10 +70,7 @@ const CardContent: React.FC<ComponentProps<"div">> = ({
   );
 };
 
-const CardFooter: React.FC<ComponentProps<"div">> = ({
-  className,
-  ...props
-}) => {
+const CardFooter = ({ className, ...props }: ComponentProps<"div">) => {
   return (
     <div
       data-slot="card-footer"
