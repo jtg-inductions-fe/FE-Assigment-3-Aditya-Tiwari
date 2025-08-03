@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,9 @@ import { loginSchema, LoginFormValues } from "./LoginForm.schema";
 const LoginForm = () => {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      accessToken: "",
+    },
   });
 
   const [isPending, startTransition] = useTransition();
@@ -39,10 +43,12 @@ const LoginForm = () => {
     startTransition(async () => {
       const result = await login(data);
       if (result?.errors) {
-        Object.entries(result.errors).forEach(([field, messages]) => {
-          form.setError(field as keyof LoginFormValues, {
-            type: "manual",
-            message: messages[0],
+        Object.entries(result.errors).forEach(([, messages]) => {
+          toast("Invalid login", {
+            description: messages,
+            classNames: {
+              title: "font-semibold",
+            },
           });
         });
       }
@@ -109,4 +115,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export { LoginForm };

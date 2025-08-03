@@ -1,5 +1,3 @@
-"use server";
-
 import { ROUTES } from "@/constants/routes";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
@@ -14,14 +12,16 @@ const secretKey = process.env.SESSION_SECRET;
 
 const encodedKey = new TextEncoder().encode(secretKey);
 
-type SessionPayload = {
+interface SessionPayload extends Record<string, unknown> {
   accessToken: string;
-};
+}
 
-export const createLoginSession = async (accessToken: string) => {
+type AccessToken = SessionPayload["accessToken"];
+
+export const createLoginSession = async (accessToken: AccessToken) => {
   const expiresAtDate = new Date(Date.now() + LOGIN_SESSION_EXPIRY_MS);
 
-  const payload: SessionPayload = { accessToken };
+  const payload = { accessToken } satisfies SessionPayload;
   const session = await encrypt(payload);
 
   const cookieStore = await cookies();
@@ -29,6 +29,7 @@ export const createLoginSession = async (accessToken: string) => {
   cookieStore.set(LOGIN_SESSION_COOKIE_NAME, session, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
     path: ROUTES.DEFAULT,
     expires: expiresAtDate,
   });
@@ -48,15 +49,14 @@ export const encrypt = async (payload: SessionPayload): Promise<string> => {
 };
 
 export const decrypt = async (
-  session: string | undefined = ""
+  session: string = ""
 ): Promise<SessionPayload | null> => {
   try {
-    if (session.length === 0) return null;
-    const { payload } = await jwtVerify(session, encodedKey, {
+    const { payload } = await jwtVerify<SessionPayload>(session, encodedKey, {
       algorithms: [JWT_ALGORITHM],
     });
 
-    return payload as SessionPayload;
+    return payload;
   } catch {
     return null;
   }
