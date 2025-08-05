@@ -8,6 +8,7 @@ export const ROUTES = {
 export const GITHUB_API = {
   ROUTES: {
     USER: "/user",
+    USERS: "/users",
   },
   REVALIDATE: {
     DEFAULT: 0,
