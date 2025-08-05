@@ -2,10 +2,10 @@
 
 import { fetchData } from "@/utils/fetchData";
 
-const userProfiles = async () => {
+const fetchUsers = async () => {
   "use server";
   const response = await fetchData({ resource: "/users" });
   return response.responseData;
 };
 
-export { userProfiles };
+export { fetchUsers };

@@ -1,5 +1,5 @@
 "use client";
-import { userProfiles } from "@/actions/search.actions";
+import { fetchUsers } from "@/actions/search.actions";
 import {
   Command,
   CommandEmpty,
@@ -14,22 +14,22 @@ import { useEffect, useState } from "react";
 
 const Autocomplete = () => {
   const [open, setOpen] = useState(false);
-  const [profilesList, setProfilesList] = useState<GitHubUserResponse[]>([]);
+  const [profileList, setProfileList] = useState<GitHubUserResponse[]>([]);
   const router = useRouter();
 
   useEffect(() => {
-    const getUserProfiles = async () => {
+    const getUsers = async () => {
       try {
-        const response = await userProfiles();
+        const response = await fetchUsers();
         if (Array.isArray(response)) {
-          setProfilesList(response);
+          setProfileList(response);
         }
       } catch {
-        setProfilesList([]);
+        setProfileList([]);
       }
     };
 
-    getUserProfiles();
+    getUsers();
   }, []);
 
   return (
@@ -46,7 +46,7 @@ const Autocomplete = () => {
             <CommandList className="max-h-60 overflow-auto bg-black rounded-md ">
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup heading="Suggestions">
-                {profilesList.map((profile) => (
+                {profileList.map((profile) => (
                   <CommandItem
                     key={profile.id}
                     onSelect={() => {
