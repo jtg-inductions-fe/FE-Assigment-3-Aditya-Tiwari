@@ -24,7 +24,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { login } from "@/actions/authActions";
+import { login } from "@/actions/auth.actions";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginFormValues } from "./LoginForm.schema";
