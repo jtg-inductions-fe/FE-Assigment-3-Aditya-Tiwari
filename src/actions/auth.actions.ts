@@ -1,25 +1,12 @@
 'use server'
 
-<<<<<<< HEAD:src/actions/authActions.ts
 import { createLoginSession, clearLoginSession } from '@/utils/loginSession'
 import { redirect } from 'next/navigation'
 import { GITHUB_API, ROUTES } from '@/constants/routes'
-import { LoginFormValues } from '@/containers/auth'
+import { LoginFormValues } from '@/containers/auth/LoginForm.schema'
 import { fetchData } from '@/utils/fetchData'
 import { ActionResult } from './actions.types'
 import { GithubUnauthorisedResponse, GitHubUserResponse } from '@/types/githubResponse'
-=======
-import { createLoginSession, clearLoginSession } from "@/utils/loginSession";
-import { redirect } from "next/navigation";
-import { GITHUB_API, ROUTES } from "@/constants/routes";
-import { LoginFormValues } from "@/containers/auth/LoginForm.schema";
-import { fetchData } from "@/utils/fetchData";
-import { ActionResult } from "./actions.types";
-import {
-  GithubUnauthorisedResponse,
-  GitHubUserResponse,
-} from "@/types/githubResponse";
->>>>>>> 20a9f6b ([AT-A3-03]:Search bar with autocomplete functionality):src/actions/auth.actions.ts
 
 type LoginErrors = {
   accessToken: string[]
@@ -43,16 +30,8 @@ const login = async (values: LoginFormValues): Promise<LoginResult> => {
     }
   }
 
-<<<<<<< HEAD:src/actions/authActions.ts
   let userName: string | undefined
   let responseData: GitHubUserResponse | GithubUnauthorisedResponse
-=======
-  let userName: string | undefined;
-  let responseData:
-    | GitHubUserResponse
-    | GithubUnauthorisedResponse
-    | GitHubUserResponse[];
->>>>>>> 20a9f6b ([AT-A3-03]:Search bar with autocomplete functionality):src/actions/auth.actions.ts
 
   try {
     const result = await fetchData<GitHubUserResponse>({
