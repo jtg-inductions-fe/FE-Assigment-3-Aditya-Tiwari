@@ -1,7 +1,7 @@
 "use client";
 
-const ErrorBoundary = () => {
+const Error = () => {
   return <div>Unknown Error Occured</div>;
 };
 
-export default ErrorBoundary;
+export default Error;
