@@ -1,88 +1,82 @@
-"use server";
+'use server'
 
-import { createLoginSession, clearLoginSession } from "@/utils/loginSession";
-import { redirect } from "next/navigation";
-import { GITHUB_API, ROUTES } from "@/constants/routes";
-import { LoginFormValues } from "@/containers/auth";
-import { fetchData } from "@/utils/fetchData";
-import { ActionResult } from "./actions.types";
-import {
-  GithubUnauthorisedResponse,
-  GitHubUserResponse,
-} from "@/types/githubResponse";
+import { createLoginSession, clearLoginSession } from '@/utils/loginSession'
+import { redirect } from 'next/navigation'
+import { GITHUB_API, ROUTES } from '@/constants/routes'
+import { LoginFormValues } from '@/containers/auth'
+import { fetchData } from '@/utils/fetchData'
+import { ActionResult } from './actions.types'
+import { GithubUnauthorisedResponse, GitHubUserResponse } from '@/types/githubResponse'
 
 type LoginErrors = {
-  accessToken: string[];
-};
+  accessToken: string[]
+}
 
 type LogoutErrors = {
-  message: string[];
-};
+  message: string[]
+}
 
-type LoginResult = ActionResult<LoginErrors>;
+type LoginResult = ActionResult<LoginErrors>
 
 const login = async (values: LoginFormValues): Promise<LoginResult> => {
-  const accessToken = values.accessToken?.trim();
+  const accessToken = values.accessToken?.trim()
 
   if (!accessToken) {
     return {
       success: false,
       errors: {
-        accessToken: ["Access token is required."],
+        accessToken: ['Access token is required.'],
       },
-    };
+    }
   }
 
-  let userName: string | undefined;
-  let responseData: GitHubUserResponse | GithubUnauthorisedResponse;
+  let userName: string | undefined
+  let responseData: GitHubUserResponse | GithubUnauthorisedResponse
 
   try {
-    const result = await fetchData({
+    const result = await fetchData<GitHubUserResponse>({
       resource: GITHUB_API.ROUTES.USER,
       accessToken,
-    });
-    responseData = result.responseData;
-    userName = result.userName;
+    })
+    responseData = result.responseData
+    userName = result.userName
 
-    if (
-      ("status" in responseData && responseData.status === "401") ||
-      !userName
-    ) {
+    if (('status' in responseData && responseData.status === '401') || !userName) {
       return {
         success: false,
         errors: {
-          accessToken: ["Invalid or expired token. Please try again."],
+          accessToken: ['Invalid or expired token. Please try again.'],
         },
-      };
+      }
     }
 
-    await createLoginSession(accessToken);
+    await createLoginSession(accessToken)
   } catch {
     return {
       success: false,
       errors: {
-        accessToken: ["Unexpected error occurred. Please try again later."],
+        accessToken: ['Unexpected error occurred. Please try again later.'],
       },
-    };
+    }
   }
 
-  redirect(`/${userName}`);
-};
+  redirect(`/${userName}`)
+}
 
 const logout = async (): Promise<ActionResult<LogoutErrors>> => {
   try {
-    await clearLoginSession();
+    await clearLoginSession()
   } catch (err) {
     if (err instanceof Error) {
-      return { success: false, errors: { message: [err.message] } };
+      return { success: false, errors: { message: [err.message] } }
     }
 
     return {
       success: false,
-      errors: { message: ["Unexpected error occurred"] },
-    };
+      errors: { message: ['Unexpected error occurred'] },
+    }
   }
-  redirect(ROUTES.LOGIN);
-};
+  redirect(ROUTES.LOGIN)
+}
 
-export { login, logout };
+export { login, logout }
