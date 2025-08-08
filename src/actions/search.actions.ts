@@ -1,12 +1,13 @@
-"use server";
+'use server'
 
-import { GITHUB_API } from "@/constants/routes";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from '@/utils/fetchData'
 
-const fetchUsers = async () => {
-  "use server";
-  const response = await fetchData({ resource: GITHUB_API.ROUTES.USERS });
-  return response.responseData;
-};
+const fetchUsers = async (query: string) => {
+  const response = await fetchData({
+    resource: `/search/users?q=${encodeURIComponent(query)}+in:login`,
+  })
 
-export { fetchUsers };
+  return response.responseData
+}
+
+export { fetchUsers }

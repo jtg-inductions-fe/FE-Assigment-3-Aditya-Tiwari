@@ -1,5 +1,5 @@
-"use client";
-import { fetchUsers } from "@/actions/search.actions";
+'use client'
+import { fetchUsers } from '@/actions/search.actions'
 import {
   Command,
   CommandEmpty,
@@ -7,30 +7,38 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command";
-import { GitHubUserResponse } from "@/types/githubResponse";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+} from '@/components/ui/command'
+import { SEARCH_DEBOUNCE_DELAY } from '@/constants/timings'
+import { GitHubUserResponse } from '@/types/githubResponse'
+import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 
 const Autocomplete = () => {
-  const [open, setOpen] = useState(false);
-  const [profileList, setProfileList] = useState<GitHubUserResponse[]>([]);
-  const router = useRouter();
+  const [open, setOpen] = useState(false)
+  const [profileList, setProfileList] = useState<GitHubUserResponse[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const router = useRouter()
 
   useEffect(() => {
-    const getUsers = async () => {
+    const delayDebounce = setTimeout(async () => {
+      if (!searchTerm.trim()) {
+        setProfileList([])
+        return
+      }
       try {
-        const response = await fetchUsers();
-        if (Array.isArray(response)) {
-          setProfileList(response);
+        const response = await fetchUsers(searchTerm)
+        if ('items' in response && Array.isArray(response.items)) {
+          setProfileList(response.items)
+        } else {
+          setProfileList([])
         }
       } catch {
-        setProfileList([]);
+        setProfileList([])
       }
-    };
+    }, SEARCH_DEBOUNCE_DELAY)
 
-    getUsers();
-  }, []);
+    return () => clearTimeout(delayDebounce)
+  }, [searchTerm])
 
   return (
     <div className="relative w-full max-w-md">
@@ -39,6 +47,7 @@ const Autocomplete = () => {
           placeholder="Search"
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 100)}
+          onValueChange={setSearchTerm}
         />
 
         {open && (
@@ -50,10 +59,10 @@ const Autocomplete = () => {
                   <CommandItem
                     key={profile.id}
                     onSelect={() => {
-                      router.push(`/${profile.login}`);
+                      router.push(`/${profile.login}`)
                     }}
                     onMouseDown={() => {
-                      router.push(`/${profile.login}`);
+                      router.push(`/${profile.login}`)
                     }}
                   >
                     {profile.login}
@@ -65,7 +74,7 @@ const Autocomplete = () => {
         )}
       </Command>
     </div>
-  );
-};
+  )
+}
 
-export { Autocomplete };
+export { Autocomplete }
