@@ -3,7 +3,7 @@
 import { createLoginSession, clearLoginSession } from '@/utils/loginSession'
 import { redirect } from 'next/navigation'
 import { GITHUB_API, ROUTES } from '@/constants/routes'
-import { LoginFormValues } from '@/containers/auth'
+import { LoginFormValues } from '@/containers/auth/LoginForm.schema'
 import { fetchData } from '@/utils/fetchData'
 import { ActionResult } from './actions.types'
 import { GithubUnauthorisedResponse, GitHubUserResponse } from '@/types/githubResponse'
